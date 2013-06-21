@@ -64,7 +64,7 @@ namespace PowerPointController.reciever
 								getByte[i] = bytes[i];
 							}
 							string recievedStr = encUTF8.GetString(getByte);
-
+							recievedStr = recievedStr.Replace("\n", "");
 							switch (recievedStr)
 							{
 								case "ppc_start":
