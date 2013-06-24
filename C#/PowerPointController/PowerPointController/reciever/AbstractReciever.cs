@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace PowerPointController.reciever
 {
@@ -33,6 +34,21 @@ namespace PowerPointController.reciever
 		protected void end()
 		{
 			controller.PowerPointController.end();
+		}
+
+		protected int getSlideLength()
+		{
+			return controller.PowerPointController.getSlideLength();
+		}
+
+		protected void jump(int index)
+		{
+			controller.PowerPointController.jump(index);
+		}
+
+		protected Bitmap getSlideImage(int index)
+		{
+			return controller.PowerPointController.getSlideImageStream(index);
 		}
 	}
 }

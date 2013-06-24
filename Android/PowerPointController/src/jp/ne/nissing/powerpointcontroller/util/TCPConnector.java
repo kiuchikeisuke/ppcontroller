@@ -21,13 +21,20 @@ public class TCPConnector {
         return IPAddress;
     }
     
+    public static int getPort(){
+    	return PORT;
+    }
+    
     public static void sendCommand(final Context context, final TCPCommands command){
-        
-        AsyncTask<TCPCommands, Void, Boolean> task = new AsyncTask<TCPCommands, Void, Boolean>(){
+        sendCommand(context, command.toString());
+   }
+    
+    public static void sendCommand(final Context context, final String cmd){
+    	        AsyncTask<String, Void, Boolean> task = new AsyncTask<String, Void, Boolean>(){
 
             @Override
-            protected Boolean doInBackground(TCPCommands... params) {
-                TCPCommands cmd = params[0];
+            protected Boolean doInBackground(String... params) {
+                String cmd = params[0];
                 
                 Socket socket = null;
                 boolean isSuccess = true;
@@ -58,15 +65,14 @@ public class TCPConnector {
             @Override
             protected void onPostExecute(Boolean result) {
                 if(result){
-                    Toast.makeText(context, "success "+command, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "success "+cmd, Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(context, "failed "+command, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "failed "+cmd, Toast.LENGTH_SHORT).show();
                 }
             }
         };
-        task.execute(command);
-        
-   }
+        task.execute(cmd);
+    }
     
 }

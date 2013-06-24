@@ -5,6 +5,7 @@ using System.Text;
 using System.Net.Sockets;
 using System.Threading;
 using System.Net;
+using System.Drawing;
 
 namespace PowerPointController.reciever
 {
@@ -65,7 +66,14 @@ namespace PowerPointController.reciever
 							}
 							string recievedStr = encUTF8.GetString(getByte);
 							recievedStr = recievedStr.Replace("\n", "");
-							switch (recievedStr)
+							string[] recievedStrs = recievedStr.Split(' ');
+							string cmd = recievedStrs[0];
+							int index = -1;
+							if (recievedStrs.Length == 2)
+							{
+								index = Int16.Parse(recievedStrs[1]);
+							}
+							switch (cmd)
 							{
 								case "ppc_start":
 									start();
@@ -87,6 +95,22 @@ namespace PowerPointController.reciever
 									ConnectionClose();
 									quitFlag = true;
 									return;
+								case "ppc_jump":
+									jump(index);
+									break;
+								case "ppc_load_slide":
+									Bitmap img = getSlideImage(index);
+									ImageConverter imgConv = new ImageConverter();
+									byte[] imgByte = (byte[])imgConv.ConvertTo(img, typeof(byte[]));
+									stream.Write(imgByte, 0, imgByte.Length);
+									stream.Flush();
+									break;
+								case "ppc_load_count":
+									int count = getSlideLength();
+									byte[] tmp = encUTF8.GetBytes(count.ToString());
+									stream.Write(tmp, 0, tmp.Length);
+									stream.Flush();
+									break;
 								default:
 									Console.WriteLine(recievedStr);
 									break;
@@ -101,11 +125,13 @@ namespace PowerPointController.reciever
 					{
 						Console.WriteLine(e.ToString());
 						ConnectionClose();
+						break;
 					}
 					catch (Exception ex)
 					{
 						Console.WriteLine(ex.ToString());
 						ConnectionClose();
+						break;
 					}
 				}
 

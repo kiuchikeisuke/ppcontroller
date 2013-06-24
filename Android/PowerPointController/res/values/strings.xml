@@ -10,5 +10,8 @@
     <string name="quit">終了</string>
     <string name="restart">再スタート</string>
     <string name="address">IPアドレス設定</string>
+    <string name="load_slides">スライド一覧取得</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
 
 </resources>
